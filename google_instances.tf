@@ -61,10 +61,10 @@ resource "google_compute_instance" "ubuntu_west" {
 
 }
 
-resource "google_compute_instance" "ubuntu_west2" {
-  name         = "testwest2"
+resource "google_compute_instance" "ubuntu_central" {
+  name         = "testcentral"
   machine_type = "n1-standard-1"
-  zone         = "us-west1-b"
+  zone         = "us-central1-b"
 
   tags = ["ubuntu", "internal"]
 
@@ -78,7 +78,7 @@ resource "google_compute_instance" "ubuntu_west2" {
   }
 
   network_interface {
-    subnetwork = "${google_compute_subnetwork.test_subnet_west.name}"
+    subnetwork = "${google_compute_subnetwork.test_subnet_central.name}"
     access_config {
     }
   }

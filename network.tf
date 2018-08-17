@@ -52,6 +52,13 @@ resource "google_compute_subnetwork" "test_subnet_west" {
   region        = "us-west1"
 }
 
+resource "google_compute_subnetwork" "test_subnet_central" {
+  name          = "testsubnetcentral"
+  ip_cidr_range = "${var.central_cidr}"
+  network       = "${google_compute_network.test_west.self_link}"
+  region        = "us-central1"
+}
+
 
 resource "google_compute_firewall" "test_internal_east" {
   name    = "test-allow-internal-east"
@@ -78,7 +85,7 @@ resource "google_compute_firewall" "test_internal_east" {
 resource "google_compute_firewall" "test_internal_west" {
   name    = "test-allow-internal-west"
   network = "${google_compute_network.test_west.name}"
-  source_ranges= ["${var.west_cidr}", "${var.east_cidr}"]
+  source_ranges= ["${var.west_cidr}", "${var.east_cidr}", "${var.central_cidr}"]
 
   allow {
     protocol = "icmp"
@@ -132,5 +139,5 @@ resource "google_compute_route" "route_vpn_west" {
   dest_range  = "${var.east_cidr}"
   network     = "${google_compute_network.test_west.name}"
   next_hop_vpn_tunnel = "${google_compute_vpn_tunnel.tunnel_west.self_link}"
-  priority    = 100
+  priority    = 1001
 }
